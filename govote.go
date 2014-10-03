@@ -11,8 +11,13 @@ func init() {
 }
 
 type (
+    // SchulzeCtrl is a struct exposed for reference -- use govote.Schulze instance
     SchulzeCtrl struct {}
+
+    // InstantRunoffCtrl is a struct exposed for reference -- use govote.InstantRunoff instance
     InstantRunoffCtrl struct {}
+
+    // PluralityCtrl is a struct exposed for reference -- use govote.Plurality instance
     PluralityCtrl struct {}
 )
 

@@ -4,6 +4,7 @@ import (
    "errors"
 )
 
+// SchulzePoll is a Condorcet poll using the Schulze method 
 type SchulzePoll struct {
    candidates     []string
    ballots        [][]string
@@ -52,7 +53,7 @@ func (p SchulzePoll) getBallotRank(idx, i int) int {
 // Returns number of voters strictly prefering candidate i to j
 func (p SchulzePoll) comparePref(i, j int) int {
    count := 0
-   for k, _ := range p.ballots {
+   for k := range p.ballots {
       ri, rj := p.getBallotRank(k, i), p.getBallotRank(k, j)
       if ri == -1 || rj == -1 { continue } 
       if ri < rj { count++ }

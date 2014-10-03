@@ -4,15 +4,15 @@ import (
    "errors"
  )
 
-
-type IRVPoll struct {
+// InstantRunoffPoll is a poll using the IRV method with specific rules for tie-breaking
+type InstantRunoffPoll struct {
    candidates     []string
    ballots        [][]string
 }
 
 // Evaluate poll; returns list of winners as slice of candidate names and
 // a slice of name-key score-value maps representing separate rounds
-func (p *IRVPoll) Evaluate() ([]string, []map[string]int, error) {
+func (p *InstantRunoffPoll) Evaluate() ([]string, []map[string]int, error) {
    if p.candidates == nil || p.ballots == nil { 
       return []string{}, []map[string]int{}, errors.New("no candidates or no ballots") 
    }
@@ -21,7 +21,7 @@ func (p *IRVPoll) Evaluate() ([]string, []map[string]int, error) {
 }
 
 // AddBallot submits a ballot to the poll, returns true on success, false on failure
-func (p *IRVPoll) AddBallot(ballot []string) bool {
+func (p *InstantRunoffPoll) AddBallot(ballot []string) bool {
    removeDuplicates(&ballot)
    if len(ballot) == 0 { return false }
    var ok bool
@@ -39,7 +39,7 @@ func (p *IRVPoll) AddBallot(ballot []string) bool {
    return true
 }
 
-func (p *IRVPoll) runRound(elim map[string]bool) map[string]int {
+func (p *InstantRunoffPoll) runRound(elim map[string]bool) map[string]int {
    tally := make(map[string]int)                // scores keyed by candidate name
    for _, v := range p.ballots {
       for i := 0; i < len(v); i++ {
@@ -52,7 +52,7 @@ func (p *IRVPoll) runRound(elim map[string]bool) map[string]int {
    return tally
 }
 
-func (p *IRVPoll) getWinners() (winners []string, rounds []map[string]int) {
+func (p *InstantRunoffPoll) getWinners() (winners []string, rounds []map[string]int) {
    elim := make(map[string]bool)                // eliminated candidates
    tally := make(map[string]int)                // scores keyed by candidate name
    ct := len(p.candidates)                      // number of candidates

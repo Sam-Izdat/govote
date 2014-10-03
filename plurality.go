@@ -4,6 +4,7 @@ import (
    "errors"
 )
 
+// PluralityPoll is a poll using a simple plurality method (candidate with most votes wins)
 type PluralityPoll struct {
    candidates     []string
    ballots        []string
@@ -21,7 +22,7 @@ func (p *PluralityPoll) Evaluate() ([]string, []CScore, error) {
 
 // AddBallot submits a ballot to the poll, returns true on success, false on failure
 func (p *PluralityPoll) AddBallot(ballot string) bool {
-   var ok bool = false
+   ok := false
    for _, cv := range p.candidates {
       if cv == ballot { 
          ok = true

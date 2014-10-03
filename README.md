@@ -1,5 +1,6 @@
 
 ![govote](doc/logo.png)
+
 ...is a Go library for conducting polls using various voting systems
 
 ##Install
