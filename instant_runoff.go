@@ -12,9 +12,9 @@ type InstantRunoffPoll struct {
 
 // Evaluate poll; returns list of winners as slice of candidate names and
 // a slice of name-key score-value maps representing separate rounds
-func (p *InstantRunoffPoll) Evaluate() ([]string, []map[string]int, error) {
+func (p *InstantRunoffPoll) Evaluate() ([]string, [][]CScore, error) {
    if p.candidates == nil || p.ballots == nil { 
-      return []string{}, []map[string]int{}, errors.New("no candidates or no ballots") 
+      return []string{}, [][]CScore{}, errors.New("no candidates or no ballots") 
    }
    winners, rounds := p.getWinners()
    return winners, rounds, nil
@@ -52,10 +52,11 @@ func (p *InstantRunoffPoll) runRound(elim map[string]bool) map[string]int {
    return tally
 }
 
-func (p *InstantRunoffPoll) getWinners() (winners []string, rounds []map[string]int) {
+func (p *InstantRunoffPoll) getWinners() (winners []string, rounds [][]CScore) {
    elim := make(map[string]bool)                // eliminated candidates
    tally := make(map[string]int)                // scores keyed by candidate name
    ct := len(p.candidates)                      // number of candidates
+   var roundsMap []map[string]int               // per-round results
 
    for i := 0; i < ct; i++ {
       elim[p.candidates[i]] = false
@@ -63,7 +64,7 @@ func (p *InstantRunoffPoll) getWinners() (winners []string, rounds []map[string]
 
    for true {
       tally = p.runRound(elim)
-      rounds = append(rounds, tally)
+      roundsMap = append(roundsMap, tally)
 
       // Figure out the lowest and highest score
       min, max := maxInt, 0
@@ -91,7 +92,6 @@ func (p *InstantRunoffPoll) getWinners() (winners []string, rounds []map[string]
                for _, c := range targets {
                   elim[c] = true
                }
-               targets = []string{}
                break
             } else { // otherwise, pick one at random
                mo := targets[randIntn(len(targets))]
@@ -105,6 +105,10 @@ func (p *InstantRunoffPoll) getWinners() (winners []string, rounds []map[string]
       if !elim[p.candidates[i]]  {
          winners = append(winners, p.candidates[i])
       }
+   }
+
+   for _, v := range roundsMap {
+      rounds = append(rounds, sortScoresDesc(v))
    }
 
    return

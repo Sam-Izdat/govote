@@ -23,53 +23,66 @@ import(
 )
 
 func main() {
-    candidates := []string{"Memphis", "Nashville", "Knoxville", "Chattanooga"}
-    schulze, _ := govote.Schulze.New(candidates)
-    plurality, _ := govote.Plurality.New(candidates)
-    runoff, _ := govote.InstantRunoff.New(candidates)
-
-    ballotMemphis := []string{"Memphis", "Nashville", "Chattanooga", "Knoxville"}
-    ballotNashville := []string{"Nashville", "Chattanooga", "Knoxville", "Memphis"}
-    ballotChattanooga := []string{"Chattanooga", "Knoxville", "Nashville", "Memphis"}
-    ballotKnoxville := []string{"Knoxville", "Chattanooga", "Nashville", "Memphis"}
-
-    for i := 0; i < 42; i++ {
-        schulze.AddBallot(ballotMemphis)
-        plurality.AddBallot(ballotMemphis[0])
-        runoff.AddBallot(ballotMemphis)
-    }
-    for i := 0; i < 26; i++ {
-        schulze.AddBallot(ballotNashville)
-        plurality.AddBallot(ballotNashville[0])
-        runoff.AddBallot(ballotNashville)
-    }
-    for i := 0; i < 15; i++ {
-        schulze.AddBallot(ballotChattanooga)
-        plurality.AddBallot(ballotChattanooga[0])
-        runoff.AddBallot(ballotChattanooga)
-    }
-    for i := 0; i < 17; i++ {
-        schulze.AddBallot(ballotKnoxville)
-        plurality.AddBallot(ballotKnoxville[0])
-        runoff.AddBallot(ballotKnoxville)
-    }
-
-    // Schulze scores are a tally of superior strongest-path comparisons for the candidate
-    fmt.Println(schulze.Evaluate())
-    // => [Nashville] [{Nashville 3} {Chattanooga 2} {Knoxville 1} {Memphis 0}] <nil>
-
-    // Plurality scores are the number of votes for the candidate
-    fmt.Println(plurality.Evaluate())
-    // => [Memphis] [{Memphis 42} {Nashville 26} {Knoxville 17} {Chattanooga 15}] <nil>
-
-    // Instant-runoff polls return a slice of rounds in name-key score-value maps
-    fmt.Println(runoff.Evaluate())
-    // => [Knoxville] [map[Memphis:42 Nashville:26 Chattanooga:15 Knoxville:17] \
-    // =>   map[Memphis:42 Nashville:26 Knoxville:32] \
-    // =>   map[Knoxville:58 Memphis:42] \
-    // =>   map[Knoxville:100]] \
-    // =>   <nil>
+    candidates := []string{"Kang", "Kodos"}
+    poll, _ := govote.Plurality.New(candidates)
+    poll.AddBallot("Kang")
+    poll.AddBallot("Kang")
+    poll.AddBallot("Kodos")
+    fmt.Println(poll.Evaluate())
+    // => [Kang] [{Kang 2} {Kodos 1}] <nil>
 }
+```
+There's a more interesting example [used on Wikipedia](http://en.wikipedia.org/wiki/Condorcet_method#Example:_Voting_on_the_location_of_Tennessee.27s_capital) for comparing voting systems, which shows how different methods can yield very different results. 
+
+```go
+// Tennessee voting on capital, suppose all voters want it close, blah, blah, blah...
+candidates := []string{"Memphis", "Nashville", "Knoxville", "Chattanooga"}
+schulze, _ := govote.Schulze.New(candidates)
+plurality, _ := govote.Plurality.New(candidates)
+runoff, _ := govote.InstantRunoff.New(candidates)
+
+ballotMemphis := []string{"Memphis", "Nashville", "Chattanooga", "Knoxville"}
+ballotNashville := []string{"Nashville", "Chattanooga", "Knoxville", "Memphis"}
+ballotChattanooga := []string{"Chattanooga", "Knoxville", "Nashville", "Memphis"}
+ballotKnoxville := []string{"Knoxville", "Chattanooga", "Nashville", "Memphis"}
+
+for i := 0; i < 42; i++ {
+    schulze.AddBallot(ballotMemphis)
+    plurality.AddBallot(ballotMemphis[0])
+    runoff.AddBallot(ballotMemphis)
+}
+for i := 0; i < 26; i++ {
+    schulze.AddBallot(ballotNashville)
+    plurality.AddBallot(ballotNashville[0])
+    runoff.AddBallot(ballotNashville)
+}
+for i := 0; i < 15; i++ {
+    schulze.AddBallot(ballotChattanooga)
+    plurality.AddBallot(ballotChattanooga[0])
+    runoff.AddBallot(ballotChattanooga)
+}
+for i := 0; i < 17; i++ {
+    schulze.AddBallot(ballotKnoxville)
+    plurality.AddBallot(ballotKnoxville[0])
+    runoff.AddBallot(ballotKnoxville)
+}
+
+// Schulze scores are a tally of superior strongest-path comparisons for the candidate
+fmt.Println(schulze.Evaluate())
+// => [Nashville] [{Nashville 3} {Chattanooga 2} {Knoxville 1} {Memphis 0}] <nil>
+
+// Plurality scores are the number of votes for the candidate
+fmt.Println(plurality.Evaluate())
+// => [Memphis] [{Memphis 42} {Nashville 26} {Knoxville 17} {Chattanooga 15}] <nil>
+
+// Instant-runoff returns a slice of rounds, each an ordered slice of candidate scores
+fmt.Println(runoff.Evaluate())
+// => [Knoxville] [map[Memphis:42 Nashville:26 Chattanooga:15 Knoxville:17] \
+// =>   [ [{Memphis 42} {Nashville 26} {Knoxville 17} {Chattanooga 15}] \
+// =>     [{Memphis 42} {Knoxville 32} {Nashville 26}] \
+// =>     [{Knoxville 58} {Memphis 42}] \
+// =>     [{Knoxville 100}] ]
+// =>   <nil>
 ```
 
 Keep in mind that multiple winners are possible. 

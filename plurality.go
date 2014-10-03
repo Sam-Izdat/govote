@@ -40,7 +40,7 @@ func (p *PluralityPoll) getWinners() (winners []string, ranks []CScore) {
    for i := 0; i < len(p.ballots); i++ { tally[p.ballots[i]]++ }
    ranks = sortScoresDesc(tally)
    for i := 0; i < ct; i++ {
-      if tally[p.candidates[i]] >= ranks[0].Score {
+      if tally[p.candidates[i]] == ranks[0].Score {
          winners = append(winners, p.candidates[i])
       }
    }

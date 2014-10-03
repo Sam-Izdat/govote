@@ -19,7 +19,7 @@ func max(a, b int) (r int) {
 }
 
 // CPair represents two candidates' indices for pairwise comparison
-type CPair struct { a, b int }
+type CPair struct { A, B int }
 
 // CScore represents a candidate and the candidate's score
 type CScore struct { 
