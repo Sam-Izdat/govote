@@ -29,10 +29,10 @@ func (_ SchulzeCtrl) New(candidates []string) (SchulzePoll, error) {
 }
 
 // New creates a new Instant Runoff poll
-func (_ InstantRunoffCtrl) New(candidates []string) (IRVPoll, error) {
+func (_ InstantRunoffCtrl) New(candidates []string) (InstantRunoffPoll, error) {
     removeDuplicates(&candidates)
-    if len(candidates) < 2 { return IRVPoll{}, errors.New("not enough candidates") }
-    return IRVPoll{candidates: candidates}, nil
+    if len(candidates) < 2 { return InstantRunoffPoll{}, errors.New("not enough candidates") }
+    return InstantRunoffPoll{candidates: candidates}, nil
 }
 
 // New creates a new Plurality poll
