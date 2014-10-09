@@ -24,11 +24,11 @@ func (p *SchulzePoll) Evaluate() ([]string, []CScore, error) {
 
 // AddBallot submits a ballot to the poll, returns true on success, false on failure
 func (p *SchulzePoll) AddBallot(ballot []string) (ok bool) {
-   removeDuplicates(&ballot)
+    removeDuplicates(&ballot)
     for _, bv := range ballot {
-      ok = false; for _, cv := range p.candidates {
-        if cv == bv { ok = true; break }
-      }
+        ok = false; for _, cv := range p.candidates {
+            if cv == bv { ok = true; break }
+        }
         if !ok { return } // false / bad candidate
     }
     if !ok { return } // false / empty ballot
