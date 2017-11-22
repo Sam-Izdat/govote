@@ -3,7 +3,7 @@
 
 ...is a Go library for conducting polls using various voting systems
 
-##Install
+## Install
 Grab the package with: 
 
     $ go get github.com/Sam-Izdat/govote
@@ -12,7 +12,7 @@ Grab the package with:
 [![License MIT](http://img.shields.io/badge/license-MIT-red.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![GoDoc](http://img.shields.io/badge/doc-REFERENCE-blue.svg?style=flat-square)](https://godoc.org/github.com/Sam-Izdat/govote)
 
-##How do I even...
+## How do I even...
 Behold.
 ```go
 package main
@@ -93,7 +93,7 @@ Instant runoff polls, in the event of loser ties at the end of a round, will eit
 
 Plurality polls will return multiple winner in the event of a tie. 
 
-#What still needs doin'
+# What still needs doin'
 
 Voting systems implemented:
 
@@ -110,6 +110,6 @@ Also need to:
 
 - [ ] Write unit tests
 
-#License
+# License
 
 MIT
