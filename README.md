@@ -8,7 +8,6 @@ Grab the package with:
 
     $ go get github.com/Sam-Izdat/govote
 
-[![Build Status](http://drone.io/github.com/Sam-Izdat/govote/status.png)](https://drone.io/github.com/Sam-Izdat/govote/latest) 
 [![License MIT](http://img.shields.io/badge/license-MIT-red.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![GoDoc](http://img.shields.io/badge/doc-REFERENCE-blue.svg?style=flat-square)](https://godoc.org/github.com/Sam-Izdat/govote)
 
