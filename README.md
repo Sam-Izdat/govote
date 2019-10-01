@@ -39,6 +39,7 @@ candidates := []string{"Memphis", "Nashville", "Knoxville", "Chattanooga"}
 schulze, _ := govote.Schulze.New(candidates)
 plurality, _ := govote.Plurality.New(candidates)
 runoff, _ := govote.InstantRunoff.New(candidates)
+approval, _ := govote.Approval.New(candidates)
 
 ballotMemphis := []string{"Memphis", "Nashville", "Chattanooga", "Knoxville"}
 ballotNashville := []string{"Nashville", "Chattanooga", "Knoxville", "Memphis"}
@@ -49,32 +50,39 @@ for i := 0; i < 42; i++ {
     schulze.AddBallot(ballotMemphis)
     plurality.AddBallot(ballotMemphis[0])
     runoff.AddBallot(ballotMemphis)
+    approval.AddBallot(ballotMemphis[0:2])
 }
 for i := 0; i < 26; i++ {
     schulze.AddBallot(ballotNashville)
     plurality.AddBallot(ballotNashville[0])
     runoff.AddBallot(ballotNashville)
+    approval.AddBallot(ballotNashville[0:2])
 }
 for i := 0; i < 15; i++ {
     schulze.AddBallot(ballotChattanooga)
     plurality.AddBallot(ballotChattanooga[0])
     runoff.AddBallot(ballotChattanooga)
+    approval.AddBallot(ballotChattanooga[0:2])
 }
 for i := 0; i < 17; i++ {
     schulze.AddBallot(ballotKnoxville)
     plurality.AddBallot(ballotKnoxville[0])
     runoff.AddBallot(ballotKnoxville)
+    approval.AddBallot(ballotKnoxville[0:2])
 }
 
 // Schulze scores are a tally of superior strongest-path comparisons for the candidate
+fmt.Println("Schulze")
 fmt.Println(schulze.Evaluate())
 // => [Nashville] [{Nashville 3} {Chattanooga 2} {Knoxville 1} {Memphis 0}] <nil>
 
 // Plurality scores are the number of votes for the candidate
+fmt.Println("Plurality")
 fmt.Println(plurality.Evaluate())
 // => [Memphis] [{Memphis 42} {Nashville 26} {Knoxville 17} {Chattanooga 15}] <nil>
 
 // Instant-runoff returns a slice of rounds, each an ordered slice of candidate scores
+fmt.Println("IRV")
 fmt.Println(runoff.Evaluate())
 // => [Knoxville] [map[Memphis:42 Nashville:26 Chattanooga:15 Knoxville:17] \
 // =>   [ [{Memphis 42} {Nashville 26} {Knoxville 17} {Chattanooga 15}] \
@@ -82,6 +90,11 @@ fmt.Println(runoff.Evaluate())
 // =>     [{Knoxville 58} {Memphis 42}] \
 // =>     [{Knoxville 100}] ]
 // =>   <nil>
+
+// Approval scores are a tally of approval votes, disregarding their specific ordinal preferences
+fmt.Println("Approval")
+fmt.Println(approval.Evaluate())
+// => [Nashville] [{Nashville 68} {Chattanooga 58} {Memphis 42} {Knoxville 32}] <nil>
 ```
 
 Keep in mind that multiple winners are possible. 
