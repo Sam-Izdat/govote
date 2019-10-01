@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-// PluralityPoll is a poll, where the voters approve one or multiple candidates
+// ApprovalPoll is a poll, where the voters approve one or multiple candidates
 type ApprovalPoll struct {
 	candidates []string
 	ballots    []string
