@@ -96,7 +96,7 @@ Plurality polls will return multiple winner in the event of a tie.
 
 Voting systems implemented:
 
-- [ ] Approval Method
+- [x] Approval Method
 - [x] Instant Runoff Method
 - [ ] Minmax Method
 - [x] Plurality Method
