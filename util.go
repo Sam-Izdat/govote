@@ -1,6 +1,7 @@
 package govote
 
 import (
+	"log"
 	"math/rand"
 	"sort"
 	"time"
@@ -116,3 +117,22 @@ func removeDuplicates(xs *[]string) {
 	}
 	*xs = (*xs)[:j]
 }
+
+func hasDuplicates(ballot []string) bool {
+	found := make(map[string]bool)
+	var result []string
+	for v := range ballot {
+		if found[ballot[v]] == true {
+			log.Println("Duplicatet vote for candidate: ", ballot[v])
+		} else {
+			found[ballot[v]] = true
+			result = append(result, ballot[v])
+		}
+	}
+
+	if len(ballot) > len(result) {
+		return true
+	}
+	return false
+}
+

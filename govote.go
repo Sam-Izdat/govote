@@ -8,6 +8,7 @@ func init() {
 	Schulze = SchulzeCtrl{}
 	InstantRunoff = InstantRunoffCtrl{}
 	Plurality = PluralityCtrl{}
+	Approval = ApprovalCtrl{}
 }
 
 type (
@@ -19,6 +20,9 @@ type (
 
 	// PluralityCtrl is a struct exposed for reference -- use govote.Plurality instance
 	PluralityCtrl struct{}
+
+	//ApprovalCtrl is a struct exposed for reference -- use govote.Approval instance
+	ApprovalCtrl struct{}
 )
 
 // New creates a new Schulze method poll
@@ -48,6 +52,15 @@ func (_ PluralityCtrl) New(candidates []string) (PluralityPoll, error) {
 	return PluralityPoll{candidates: candidates}, nil
 }
 
+// New creates a new Approval poll
+func (_ ApprovalCtrl) New(candidates []string) (ApprovalPoll, error) {
+	removeDuplicates(&candidates)
+	if len(candidates) < 2 {
+		return ApprovalPoll{}, errors.New("not enough candidates")
+	}
+	return ApprovalPoll{candidates: candidates}, nil
+}
+
 var (
 	// Schulze handler
 	Schulze SchulzeCtrl
@@ -57,4 +70,7 @@ var (
 
 	// Plurality handler
 	Plurality PluralityCtrl
+
+	//Approval handler
+	Approval ApprovalCtrl
 )
